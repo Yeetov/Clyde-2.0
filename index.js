@@ -115,12 +115,28 @@ client.on('guildCreate', guild => {
 guild.systemChannel.send('Hello, thank you for adding me! If you need help, just use `!help` :)')
 })
   
-//Help Command
+//Help Command 1
 client.on('message', message => {
   // If message is ping
   if (message.content === '!help') {
     // Send pong back
-    message.reply('Thank you for asking for help! The commands are: `!ban <user>` and `!kick <user>`! More commands are coming, this bot is still in development. <a:version:867324402151718932><:clyde:867483292538372106>');
+    message.reply('Thank you for asking for help! \nThe commands are:\n`!ban <user>` Bans a user from the server\n`!kick <user>` Kicks a user from the server\n`!invite` Sends discord bot invite to add the bot\nMore commands are coming, this bot is still in development. <a:version:867324402151718932><:clyde:867483292538372106> \nTutorial: https://youtu.be/ew8YMSCt4NE\n\nUse `!help <page number>` for more commands.');
+  }
+});
+
+client.on('message', message => {
+  // If message is ping
+  if (message.content === '!help 1') {
+    // Send pong back
+    message.reply('Thank you for asking for help! \nThe commands are:\n`!ban <user>` Bans a user from the server\n`!kick <user>` Kicks a user from the server\n`!invite` Sends discord bot invite to add the bot\nMore commands are coming, this bot is still in development. <a:version:867324402151718932><:clyde:867483292538372106> \nTutorial: https://youtu.be/ew8YMSCt4NE\n\nUse `!help <page number>` for more commands.');
+  }
+});
+//Help Command 2
+client.on('message', message => {
+  // If message is ping
+  if (message.content === '!help 2') {
+    // Send pong back
+    message.reply('Randomizer\n`!r1-10` Sends a random number between 1 and 10\n`!r1-100` Sends a random number between 1 and 100\n`!r1-1000` Sends a random number between 1 and 1000');
   }
 });
 //Login to bot
@@ -146,3 +162,45 @@ client.on('message', message => {
     message.reply('https://dsc.gg/clyde2.0 <:clyde:867483292538372106>');
   }
 });
+
+//Randomizer command
+//1 - 100
+client.on('message', message => {
+  if (message.content === '!r1-100') {
+    var r1100 = Math.floor(Math.random() * 100) + 1;
+  message.reply(`Your random number is ${r1100}!`);
+ }
+});
+//1 - 10
+client.on('message', message => {
+  if (message.content === '!r1-10') {
+    var r110 = Math.floor(Math.random() * 10) + 1;
+  message.reply(`Your random number is ${r110}!`);
+ }
+});
+//1 - 1000
+client.on('message', message => {
+  if (message.content === '!r1-1000') {
+    var r11000 = Math.floor(Math.random() * 1000) + 1;
+  message.reply(`Your random number is ${r11000}!`);
+ }
+});
+
+
+//Message Log
+client.on('messageUpdate', async(oldMessage,newMessage)=>{
+ require('./messageUpdate')(oldMessage,newMessage)
+})
+client.on('messageDelete', async(message)=>{
+ const {MessageEmbed} = require('discord.js')
+module.exports=async(message)=>{
+  let embed = new MessageEmbed()
+  .setTitle(`New message deleted!`)
+  .setDescription(`**The user, ${message.author.tag} has deleted a message in <#${message.channel.id}>**`)
+  .addField(`Content`, message.content,true)
+  let channel = message.guild.channels.cache.find(ch=ch.name==='delete-message-logs')
+  if(!channel)return;
+  channel.send(embed)
+
+}
+})
